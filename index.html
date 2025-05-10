@@ -34,18 +34,21 @@
     }
   </style>
 </head>
-<body class="p-3">
+<body class="p-1">
   <div class="container">
-    <h4 class="mb-3 text-center fw-bold text-primary">Address Label by SAGAR</h4>
+    <h4 class="mb-3 mt-2 text-center fw-bold text-primary text-decoration-underline">Address Label Generator</h4>
 
     <div id="address-container"></div>
 
     <div class="d-grid gap-2">
-      <button class="btn btn-success" onclick="addAddressBlock()">Add New Address</button>
-      <button class="btn btn-primary" onclick="downloadPDF()">Download PDF</button>
-      <div class="text-center">Powered by <em><a  class="text-warning fw-bold" href="https://github.com/sagarxt" target="_blank">Sagar Mallik </a></em>&#x2665;</div>
+      <button class="btn btn-success fw-bold" id="add-btn" onclick="addAddressBlock()">Add New Address</button>
+      <div id="max-note" class="text-danger fw-semibold text-center small" style="display: none;">Maximum 6 Addresses allowed per PDF</div>
+      <button class="btn btn-primary fw-bold" onclick="downloadPDF()">Download PDF</button>
     </div>
 
+    <footer class="text-center mt-2 mb-2">
+      <div class="text-center">Powered by <em><a  class="text-warning fw-bold" href="https://github.com/sagarxt" target="_blank">Sagar Mallik </a></em>&#x2665;</div>
+    </footer>
     <!-- Hidden PDF container -->
     <div id="pdf-content" style="display: none;"></div>
   </div>
@@ -53,8 +56,12 @@
   <script>
     function addAddressBlock() {
       const container = document.getElementById("address-container");
+      const currentCount = container.querySelectorAll(".address-entry").length;
+
+      if (currentCount >= 6) return;
+
       const div = document.createElement("div");
-      div.className = "row g-3 my-2 address-entry border border-2 rounded pb-2";
+      div.className = "row g-3 my-2 address-entry border border-dark border-2 rounded pb-2";
 
       div.innerHTML = `
         <div class="col-12 col-md-6 mt-2">
@@ -67,6 +74,12 @@
         </div>
       `;
       container.appendChild(div);
+
+      // Disable button if count reaches 6
+      if (currentCount + 1 >= 6) {
+        document.getElementById("add-btn").disabled = true;
+        document.getElementById("max-note").style.display = "block";
+      }
     }
 
     async function downloadPDF() {
