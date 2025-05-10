@@ -90,8 +90,8 @@
       const { jsPDF } = window.jspdf;
       const pdf = new jsPDF("p", "pt", "a4");
 
-      const canvas = await html2canvas(pdfContent);
-      const imgData = canvas.toDataURL("image/png");
+      const canvas = await html2canvas(pdfContent, { scale: 2 });
+      const imgData = canvas.toDataURL("image/jpeg", 0.7);
       const imgProps = pdf.getImageProperties(imgData);
       const pdfWidth = pdf.internal.pageSize.getWidth();
       const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
